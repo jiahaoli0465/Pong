@@ -1,0 +1,63 @@
+body {
+  background-color: black;
+  color: aliceblue;
+}
+
+#game {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+body #board {
+  background-color: white;
+  width: 500px;
+  height: 400px;
+  position: relative;
+}
+
+.goal {
+  width: 10px;
+  height: 100%;
+  background-color: aqua;
+}
+
+#leftgoal {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#rightgoal {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#ball {
+  background-color: blueviolet;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.control {
+  width: 15px;
+  height: 80px;
+  background-color: cadetblue;
+  position: absolute;
+}
+
+/* #p1 {
+  left: 10%;
+  top: 50%;
+}
+
+#p2 {
+  right: 10%;
+  top: 50%;
+} */
