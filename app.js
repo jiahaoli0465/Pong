@@ -207,9 +207,9 @@ const startGame = async () => {
   };
 
   const updateTeleport = () => {
-    if (tick == 0) {
-      return;
-    }
+    // if (tick == 0) {
+    //   return;
+    // }
 
     if (tick % 1000 == 0) {
       // spawn teleporter
@@ -226,7 +226,7 @@ const startGame = async () => {
       Board.appendChild(tele2);
     }
 
-    if (tick % 1500 == 0) {
+    if (tick % 1500 == 0 || tick == 500) {
       const teleporters = document.querySelectorAll('.teleporter');
 
       teleporters.forEach((tele) => {
@@ -256,6 +256,7 @@ const startGame = async () => {
           ball.positionY = teleporter2.positionY + 35;
           ball.positionX = teleporter2.positionX + 7.5;
           teleportCooldown = 100;
+          return;
         }
       }
 
@@ -270,6 +271,7 @@ const startGame = async () => {
           ball.positionY = teleporter1.positionY + 35;
           ball.positionX = teleporter1.positionX + 7.5;
           teleportCooldown = 100;
+          return;
         }
       }
     }
@@ -330,7 +332,7 @@ const startGame = async () => {
   };
 
   GAME_CONDITION = '';
-  const run = setInterval(game, 7);
+  const run = setInterval(game, 6);
 
   //   const endGame = () => {
   //     clearInterval(run);
