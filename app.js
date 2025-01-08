@@ -4,6 +4,10 @@ const BOARD_HEIGHT = 400;
 const CONTROL_HEIGHT = 80;
 const CONTROL_WIDTH = 15;
 
+const tickRegion = [220, 280];
+
+const Board = document.querySelector('#board');
+
 const P1 = document.querySelector('#p1');
 const P2 = document.querySelector('#p2');
 
@@ -14,13 +18,17 @@ const endGameBtn = document.querySelector('#endgame');
 
 const gameCondition = document.querySelector('#gameCondition');
 
-const maxSpeed = 6;
+const maxSpeed = 4;
 
 const p1Goal = 0;
 
 const p2Goal = BOARD_WIDTH;
 
 let GAME_CONDITION;
+
+let teleportCooldown = 0; //ticks
+
+let tick = 0;
 
 const commands = {
   up1: false,
@@ -84,6 +92,22 @@ const startGame = async () => {
     width: 30,
   };
 
+  const teleporter1 = {
+    element: null,
+    positionY: null,
+    positionX: null,
+    height: 70,
+    width: 15,
+  };
+
+  const teleporter2 = {
+    element: null,
+    positionY: null,
+    positionX: null,
+    height: 70,
+    width: 15,
+  };
+
   const updatePlayer = (control, y) => {
     const res = control.positionY + y;
     // console.log(res);
@@ -136,7 +160,7 @@ const startGame = async () => {
     const rightDistance = control2.positionX;
 
     if (ball.positionX < leftDistance + 15) {
-      console.log('in area');
+      //   console.log('in area');
       if (leftBoundLow < centerOfBall && centerOfBall < leftBoundHigh) {
         if (x_speed > 0) {
           return;
@@ -171,6 +195,86 @@ const startGame = async () => {
     }
   };
 
+  const createTeleporter = () => {
+    const tele = document.createElement('div');
+    tele.classList.add('teleporter');
+
+    const x = Math.random() * 60 + 220;
+    const y = Math.random() * 330;
+    tele.style.left = `${x}px`;
+    tele.style.top = `${y}px`;
+    return [tele, x, y];
+  };
+
+  const updateTeleport = () => {
+    if (tick == 0) {
+      return;
+    }
+
+    if (tick % 1000 == 0) {
+      // spawn teleporter
+      const [tele1, x1, y1] = createTeleporter();
+      teleporter1.element = tele1;
+      teleporter1.positionX = x1;
+      teleporter1.positionY = y1;
+      Board.appendChild(tele1);
+
+      const [tele2, x2, y2] = createTeleporter();
+      teleporter2.element = tele2;
+      teleporter2.positionX = x2;
+      teleporter2.positionY = y2;
+      Board.appendChild(tele2);
+    }
+
+    if (tick % 1500 == 0) {
+      const teleporters = document.querySelectorAll('.teleporter');
+
+      teleporters.forEach((tele) => {
+        Board.removeChild(tele);
+      });
+      teleporter1.element = null;
+      teleporter1.positionX = null;
+      teleporter1.positionY = null;
+
+      teleporter2.element = null;
+      teleporter2.positionX = null;
+      teleporter2.positionY = null;
+      //despawn teleporter
+    }
+  };
+
+  const teleportBall = () => {
+    if (teleporter1.element && teleporter2.element && teleportCooldown == 0) {
+      if (
+        ball.positionX > teleporter1.positionX &&
+        ball.positionX < teleporter1.positionX + 15
+      ) {
+        if (
+          teleporter1.positionY - 15 < ball.positionY &&
+          ball.positionY + 15 < teleporter1.positionY + 70 + 15
+        ) {
+          ball.positionY = teleporter2.positionY + 35;
+          ball.positionX = teleporter2.positionX + 7.5;
+          teleportCooldown = 70;
+        }
+      }
+
+      if (
+        ball.positionX > teleporter2.positionX &&
+        ball.positionX < teleporter2.positionX + 15
+      ) {
+        if (
+          teleporter2.positionY - 15 < ball.positionY &&
+          ball.positionY < teleporter2.positionY + 70 + 15
+        ) {
+          ball.positionY = teleporter1.positionY + 35;
+          ball.positionX = teleporter1.positionX + 7.5;
+          teleportCooldown = 70;
+        }
+      }
+    }
+  };
+
   const updateBall = (ball) => {
     // console.log('run');
     const res = calculate_position();
@@ -184,11 +288,12 @@ const startGame = async () => {
     }
 
     bounceBall();
+    teleportBall();
 
     // console.log(ball);
 
-    ball.element.style.top = `${parseInt(ball.positionY)}px`;
-    ball.element.style.left = `${parseInt(ball.positionX)}px`;
+    ball.element.style.top = `${ball.positionY}px`;
+    ball.element.style.left = `${ball.positionX}px`;
   };
 
   updatePlayer(control1, 0);
@@ -219,6 +324,9 @@ const startGame = async () => {
     }
 
     updateBall(ball);
+    updateTeleport();
+    tick = tick + 1;
+    teleportCooldown = teleportCooldown > 0 ? teleportCooldown - 1 : 0;
   };
 
   GAME_CONDITION = '';
@@ -239,6 +347,7 @@ startGameBtn.addEventListener('click', () => {
     console.log('start');
     startGame();
     GAME_CONDITION = 'start';
+    tick = 0;
     startGameBtn.remove();
   }
 });

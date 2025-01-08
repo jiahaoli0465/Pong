@@ -1,26 +1,38 @@
+/* -------------- Global Styles -------------- */
 body {
-  background-color: black;
+  margin: 0;
+  padding: 0;
+  background-color: #000000; /* Keep it black for a striking contrast */
   color: aliceblue;
+  font-family: 'Orbitron', sans-serif; /* A futuristic looking font */
+  overflow: hidden;
 }
 
 #game {
   display: flex;
-  width: 100%;
+  width: 100vw; /* Keep full screen width */
   justify-content: center;
   align-items: center;
 }
 
-body #board {
-  background-color: white;
+/* -------------- Board Styles -------------- */
+#board {
   width: 500px;
   height: 400px;
   position: relative;
+  /* Create a more modern subtle gradient background */
+  background: linear-gradient(180deg, #141e30 0%, #243b55 100%);
+  border: 2px solid #06d6a0; /* Vibrant teal border */
+  border-radius: 10px;
+  box-shadow: 0 0 20px #06d6a0; /* Neon glow around the board */
 }
 
+/* -------------- Goals -------------- */
 .goal {
   width: 10px;
   height: 100%;
-  background-color: aqua;
+  background-color: #06acd6;
+  box-shadow: 0 0 10px #06b7d6; /* Neon glow for the goals */
 }
 
 #leftgoal {
@@ -35,29 +47,37 @@ body #board {
   top: 0;
 }
 
+/* -------------- Ball -------------- */
 #ball {
-  background-color: blueviolet;
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d);
   width: 30px;
   height: 30px;
   border-radius: 50%;
   position: absolute;
+
   left: 50%;
   top: 50%;
+
+  box-shadow: 0 0 15px #ff6b6b; /* Glowing effect */
+  will-change: top, left;
+  transform: translateZ(0);
 }
 
+/* -------------- Paddles / Controls -------------- */
 .control {
   width: 15px;
   height: 80px;
-  background-color: cadetblue;
+  background-color: #11b2a7;
   position: absolute;
+  border-radius: 5px;
+  box-shadow: 0 0 12px #11aab2;
 }
 
-/* #p1 {
-  left: 10%;
-  top: 50%;
+.teleporter {
+  width: 15px;
+  height: 70px;
+  background-color: #114cb2;
+  position: absolute;
+  box-shadow: 0 0 12px #9411b2;
+  border-radius: 5px;
 }
-
-#p2 {
-  right: 10%;
-  top: 50%;
-} */
