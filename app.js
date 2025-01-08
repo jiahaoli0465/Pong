@@ -255,7 +255,7 @@ const startGame = async () => {
         ) {
           ball.positionY = teleporter2.positionY + 35;
           ball.positionX = teleporter2.positionX + 7.5;
-          teleportCooldown = 70;
+          teleportCooldown = 100;
         }
       }
 
@@ -269,7 +269,7 @@ const startGame = async () => {
         ) {
           ball.positionY = teleporter1.positionY + 35;
           ball.positionX = teleporter1.positionX + 7.5;
-          teleportCooldown = 70;
+          teleportCooldown = 100;
         }
       }
     }
